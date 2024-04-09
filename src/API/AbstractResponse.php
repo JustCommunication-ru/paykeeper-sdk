@@ -19,6 +19,10 @@ abstract class AbstractResponse implements ResponseInterface
             throw new PaykeeperAPIException('Unable to decode response data. Error: ' . json_last_error_msg());
         }
 
+        if (isset($response_data['result']) && $response_data['result'] === 'fail') {
+            throw new PaykeeperAPIException($response_data['msg']);
+        }
+
         return $response_data;
     }
 }

@@ -7,10 +7,14 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\Response;
+use JustCommunication\PaykeeperSDK\API\Invoice\InvoiceByIdRequest;
 use JustCommunication\PaykeeperSDK\API\RequestInterface;
 use JustCommunication\PaykeeperSDK\API\ResponseInterface;
 use JustCommunication\PaykeeperSDK\API\TokenRequest;
 use JustCommunication\PaykeeperSDK\Exception\PaykeeperAPIException;
+use JustCommunication\PaykeeperSDK\Service\RefreshTokenMiddleware;
+use JustCommunication\PaykeeperSDK\TokenHandler\InMemoryTokenHandler;
+use JustCommunication\PaykeeperSDK\TokenHandler\TokenHandlerInterface;
 use Psr\Http\Message\ResponseInterface as HttpResponseInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -20,6 +24,9 @@ use Psr\Log\NullLogger;
  * @method API\TokenResponse sendTokenRequest(API\TokenRequest $request)
  * @method API\Systems\SystemsListResponse sendSystemsListRequest(API\Systems\SystemsListResponse $request)
  * @method API\Errors\ErrorsTotalResponse sendErrorsTotalRequest(API\Errors\ErrorsTotalRequest $request)
+ * @method API\Invoice\InvoicePreviewResponse sendInvoicePreviewRequest(API\Invoice\InvoicePreviewRequest $request)
+ * @method API\Invoice\InvoiceListResponse sendInvoiceListRequest(API\Invoice\InvoiceListRequest $request)
+ * @method API\Invoice\InvoiceByIdResponse sendInvoiceByIdRequest(API\Invoice\InvoiceByIdRequest $request)
  */
 class PaykeeperAPIClient implements LoggerAwareInterface
 {
@@ -33,30 +40,37 @@ class PaykeeperAPIClient implements LoggerAwareInterface
     protected string $url;
     protected string $username;
     protected string $password;
-    protected string $token;
 
     protected Client $httpClient;
 
     /**
      * @param Client|array|null $httpClientOrOptions
      */
-    public function __construct(string $url, string $username, string $password, string $token, $httpClientOrOptions = null)
+    public function __construct(string $url, string $username, string $password, ?TokenHandlerInterface $tokenHandler = null, $httpClientOrOptions = null)
     {
         $this->url = $url;
         $this->username = $username;
         $this->password = $password;
-        $this->token = $token;
 
         $this->logger = new NullLogger();
         $this->httpClient = self::createHttpClient($httpClientOrOptions);
+        $this->httpClient->getConfig('handler')->push(new RefreshTokenMiddleware($this, $tokenHandler ?? (new InMemoryTokenHandler())));
     }
 
     /**
      * @throws PaykeeperAPIException
      */
-    public function token(): string
+    public function getToken(): string
     {
         return $this->sendTokenRequest(new TokenRequest())->getToken();
+    }
+
+    /**
+     * @throws PaykeeperAPIException
+     */
+    public function getInvoice(int $invoice_id): Model\Invoice
+    {
+        return $this->sendInvoiceByIdRequest(new InvoiceByIdRequest($invoice_id))->getInvoice();
     }
 
     public function __call($name, array $arguments)
@@ -154,8 +168,8 @@ class PaykeeperAPIClient implements LoggerAwareInterface
             throw new PaykeeperAPIException('Unable to decode error response data. Error: ' . json_last_error_msg());
         }
 
-        if (isset($response_data['status'], $response_data['detail'])) {
-            throw new PaykeeperAPIException($response_data['detail'], $response_data['status']);
+        if (isset($response_data['result']) && $response_data['result'] === 'fail') {
+            throw new PaykeeperAPIException($response_data['msg']);
         }
     }
 
