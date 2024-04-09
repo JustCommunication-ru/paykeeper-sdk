@@ -75,11 +75,13 @@ $tokenHandler = new CallbackTokenHandler(function () use ($db) {
 
 ## Методы
 
-[Создание счета](#создание-счета)
+[Подготовка счета](#подготовка-счета)
 
 [Получение информации о счете](#получение-информации-о-счете)
 
-### Создание счета
+[История счетов](#история-счетов)
+
+### Подготовка счета
 
 ```php
 use JustCommunication\PaykeeperSDK\API\Invoice\InvoicePreviewRequest;
@@ -111,6 +113,32 @@ $invoice->getStatus();
 $invoice->getCreatedAt();
 $invoice->getPaidAt();
 $invoice->getPayAmount();
+```
+
+### История счетов
+
+```php
+use JustCommunication\PaykeeperSDK\API\Invoice\InvoiceListRequest;
+
+$invoiceListRequest = new InvoiceListRequest();
+$invoiceListRequest->setStatuses([
+    $invoiceListRequest::STATUS_SENT,
+    $invoiceListRequest::STATUS_PAID,
+    $invoiceListRequest::STATUS_EXPIRED
+])
+    ->setStartDate(new \DateTime('-10 days'))
+    ->setEndDate(new \DateTime('+10 days'))
+;
+
+$response = $client->sendInvoiceListRequest($invoiceListRequest);
+
+foreach ($response->getInvoices() as $invoice) {
+    $invoice->getId();
+    $invoice->getStatus();
+    $invoice->getCreatedAt();
+    $invoice->getPaidAt();
+    $invoice->getPayAmount();
+}
 ```
 
 ## Настройка HTTP клиента
