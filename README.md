@@ -1,9 +1,9 @@
 # paykeeper.ru PHP SDK
 
-[![Latest Stable Version](https://poser.pugx.org/justcommunication-ru/paykeeper-sdk/v)](//packagist.org/packages/justcommunication-ru/tinkoff-acquiring-api-client)
-[![Latest Unstable Version](http://poser.pugx.org/justcommunication-ru/paykeeper-sdk/v/unstable)](https://packagist.org/packages/justcommunication-ru/tinkoff-acquiring-api-client)
-[![Total Downloads](https://poser.pugx.org/justcommunication-ru/paykeeper-sdk/downloads)](//packagist.org/packages/justcommunication-ru/tinkoff-acquiring-api-client)
-[![License](http://poser.pugx.org/justcommunication-ru/paykeeper-sdk/license)](https://packagist.org/packages/justcommunication-ru/tinkoff-acquiring-api-client)
+[![Latest Stable Version](https://poser.pugx.org/justcommunication-ru/paykeeper-sdk/v)](//packagist.org/packages/justcommunication-ru/paykeeper-sdk)
+[![Latest Unstable Version](http://poser.pugx.org/justcommunication-ru/paykeeper-sdk/v/unstable)](https://packagist.org/packages/justcommunication-ru/paykeeper-sdk)
+[![Total Downloads](https://poser.pugx.org/justcommunication-ru/paykeeper-sdk/downloads)](//packagist.org/packages/justcommunication-ru/paykeeper-sdk)
+[![License](http://poser.pugx.org/justcommunication-ru/paykeeper-sdk/license)](https://packagist.org/packages/justcommunication-ru/paykeeper-sdk)
 
 
 PHP SDK для сервиса https://paykeeper.ru
