@@ -22,7 +22,7 @@ use Psr\Log\NullLogger;
 
 /**
  * @method API\TokenResponse sendTokenRequest(API\TokenRequest $request)
- * @method API\Systems\SystemsListResponse sendSystemsListRequest(API\Systems\SystemsListResponse $request)
+ * @method API\Systems\SystemsListResponse sendSystemsListRequest(API\Systems\SystemsListRequest $request)
  * @method API\Errors\ErrorsTotalResponse sendErrorsTotalRequest(API\Errors\ErrorsTotalRequest $request)
  * @method API\Invoice\InvoicePreviewResponse sendInvoicePreviewRequest(API\Invoice\InvoicePreviewRequest $request)
  * @method API\Invoice\InvoiceListResponse sendInvoiceListRequest(API\Invoice\InvoiceListRequest $request)
@@ -192,7 +192,7 @@ class PaykeeperAPIClient implements LoggerAwareInterface
         if ($httpClientOrOptions instanceof Client) {
             $httpClient = $httpClientOrOptions;
         } elseif (is_array($httpClientOrOptions)) {
-            $httpClient = new Client($httpClientOrOptions);
+            $httpClient = new Client(array_merge(self::$default_http_client_options, $httpClientOrOptions));
         } else {
             $httpClient = new Client(self::$default_http_client_options);
         }
