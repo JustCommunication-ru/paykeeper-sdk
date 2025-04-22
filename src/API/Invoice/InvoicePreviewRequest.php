@@ -14,6 +14,7 @@ class InvoicePreviewRequest extends AbstractRequest
     protected ?float $amount = null;
     protected ?string $client_id = null;
     protected ?string $order_id = null;
+    protected ?ServiceName $serviceNameObject = null;
     protected ?string $service_name = null;
     protected ?string $client_email = null;
     protected ?string $client_phone = null;
@@ -49,6 +50,17 @@ class InvoicePreviewRequest extends AbstractRequest
     public function setOrderId(?string $order_id): self
     {
         $this->order_id = $order_id;
+        return $this;
+    }
+
+    public function getServiceNameObject(): ?ServiceName
+    {
+        return $this->serviceNameObject;
+    }
+
+    public function setServiceNameObject(?ServiceName $serviceNameObject): self
+    {
+        $this->serviceNameObject = $serviceNameObject;
         return $this;
     }
 
@@ -106,6 +118,12 @@ class InvoicePreviewRequest extends AbstractRequest
             'client_email' => $this->client_email,
             'client_phone' => $this->client_phone
         ];
+
+        if ($this->serviceNameObject) {
+            $form_params['service_name'] = json_encode($this->serviceNameObject, JSON_UNESCAPED_UNICODE);
+        } elseif ($this->service_name) {
+            $form_params['service_name'] = $this->service_name;
+        }
 
         if ($this->expireAt) {
             $form_params['expiry_at'] = $this->expireAt->format('Y-m-d H:i:s');
