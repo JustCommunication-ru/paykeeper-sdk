@@ -8,6 +8,7 @@ use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\Response;
 use JustCommunication\PaykeeperSDK\API\Invoice\InvoiceByIdRequest;
+use JustCommunication\PaykeeperSDK\API\Invoice\InvoiceRevokeRequest;
 use JustCommunication\PaykeeperSDK\API\RequestInterface;
 use JustCommunication\PaykeeperSDK\API\ResponseInterface;
 use JustCommunication\PaykeeperSDK\API\TokenRequest;
@@ -25,6 +26,7 @@ use Psr\Log\NullLogger;
  * @method API\Systems\SystemsListResponse sendSystemsListRequest(API\Systems\SystemsListRequest $request)
  * @method API\Errors\ErrorsTotalResponse sendErrorsTotalRequest(API\Errors\ErrorsTotalRequest $request)
  * @method API\Invoice\InvoicePreviewResponse sendInvoicePreviewRequest(API\Invoice\InvoicePreviewRequest $request)
+ * @method API\Invoice\InvoiceRevokeResponse sendInvoiceRevokeRequest(API\Invoice\InvoiceRevokeRequest $request)
  * @method API\Invoice\InvoiceListResponse sendInvoiceListRequest(API\Invoice\InvoiceListRequest $request)
  * @method API\Invoice\InvoiceByIdResponse sendInvoiceByIdRequest(API\Invoice\InvoiceByIdRequest $request)
  */
@@ -71,6 +73,14 @@ class PaykeeperAPIClient implements LoggerAwareInterface
     public function getInvoice(int $invoice_id): Model\Invoice
     {
         return $this->sendInvoiceByIdRequest(new InvoiceByIdRequest($invoice_id))->getInvoice();
+    }
+
+    /**
+     * @throws PaykeeperAPIException
+     */
+    public function revokeInvoice(string $invoice_id): void
+    {
+        $this->sendInvoiceRevokeRequest(new InvoiceRevokeRequest($invoice_id));
     }
 
     public function __call($name, array $arguments)
