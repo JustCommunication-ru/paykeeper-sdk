@@ -126,7 +126,7 @@ class InvoicePreviewRequest extends AbstractRequest
         }
 
         if ($this->expireAt) {
-            $form_params['expiry_at'] = $this->expireAt->format('Y-m-d H:i:s');
+            $form_params['expiry'] = $this->expireAt->format('Y-m-d H:i:s');
         }
 
         return [
