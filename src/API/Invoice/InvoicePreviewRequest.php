@@ -112,8 +112,8 @@ class InvoicePreviewRequest extends AbstractRequest
     {
         $form_params = [
             'pay_amount' => $this->amount,
-            'client_id' => $this->client_id,
-            'order_id' => $this->order_id,
+            'clientid' => $this->client_id,
+            'orderid' => $this->order_id,
             'service_name' => $this->service_name,
             'client_email' => $this->client_email,
             'client_phone' => $this->client_phone

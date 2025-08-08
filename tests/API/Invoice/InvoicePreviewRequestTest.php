@@ -20,10 +20,10 @@ class InvoicePreviewRequestTest extends TestCase
 
         $this->assertEquals([
             'form_params' => [
-                'order_id' => '123',
+                'orderid' => '123',
                 'service_name' => 'Test service',
                 'pay_amount' => 100.0,
-                'client_id' => null,
+                'clientid' => null,
                 'client_email' => null,
                 'client_phone' => null
             ]
@@ -49,10 +49,10 @@ class InvoicePreviewRequestTest extends TestCase
 
         $this->assertEquals([
             'form_params' => [
-                'order_id' => '123',
+                'orderid' => '123',
                 'service_name' => '{"service_name":"Test service","cart":[{"name":"Первая позиция","price":100,"quantity":2,"sum":200,"tax":"none"},{"name":"Вторая позиция","price":100,"quantity":2,"sum":200,"tax":"none"}]}',
                 'pay_amount' => 100.0,
-                'client_id' => null,
+                'clientid' => null,
                 'client_email' => null,
                 'client_phone' => null
             ]
