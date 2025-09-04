@@ -59,6 +59,39 @@ class PaykeeperAPIClient implements LoggerAwareInterface
         $this->httpClient->getConfig('handler')->push(new RefreshTokenMiddleware($this, $tokenHandler ?? (new InMemoryTokenHandler())));
     }
 
+    public function getUrl(): string
+    {
+        return $this->url;
+    }
+
+    public function setUrl(string $url): self
+    {
+        $this->url = $url;
+        return $this;
+    }
+
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
+        return $this;
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+        return $this;
+    }
+
     /**
      * @throws PaykeeperAPIException
      */
