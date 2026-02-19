@@ -56,12 +56,7 @@ class RefreshTokenMiddleware
     private function onFulfilled(RequestInterface $request, array $options, $handler)
     {
         return function ($response) use ($request, $options, $handler) {
-            $unauthorized_responses = [
-                '{"result":"fail","msg":"\u0422\u043e\u043a\u0435\u043d \u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u0438 \u043d\u0435 \u0432\u0435\u0440\u0435\u043d."}',
-                '{"result":"fail","msg":"\u0422\u043e\u043a\u0435\u043d \u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u0438 \u043d\u0435 \u0432\u0435\u0440\u0435\u043d.","error_code":67}'
-            ];
-
-            if ($response && !in_array((string)$response->getBody(), $unauthorized_responses)) {
+            if ($response && !str_contains('\u0422\u043e\u043a\u0435\u043d \u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u0438 \u043d\u0435 \u0432\u0435\u0440\u0435\u043d.', (string)$response->getBody())) {
                 return $response;
             }
 
