@@ -56,7 +56,7 @@ class RefreshTokenMiddleware
     private function onFulfilled(RequestInterface $request, array $options, $handler)
     {
         return function ($response) use ($request, $options, $handler) {
-            if ($response && !str_contains('\u0422\u043e\u043a\u0435\u043d \u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u0438 \u043d\u0435 \u0432\u0435\u0440\u0435\u043d.', (string)$response->getBody())) {
+            if ($response && strpos((string)$response->getBody(), '\u0422\u043e\u043a\u0435\u043d \u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u0438 \u043d\u0435 \u0432\u0435\u0440\u0435\u043d.') === false) {
                 return $response;
             }
 
